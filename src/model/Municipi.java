@@ -18,6 +18,10 @@ public class Municipi {
 		this.resultats = resultats;
 		
 	}
+	public Municipi() {
+		
+		
+	}
 	
 	public String getNom() {
 		return nom;

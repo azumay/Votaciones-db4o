@@ -3,8 +3,10 @@ package app;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import model.Model;
+import model.Municipi;
 
 public class Vista {
 
@@ -20,7 +22,7 @@ public class Vista {
 					Vista window = new Vista();
 					window.frame.setVisible(true);
 				} catch (Exception e){
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, e.toString(), "Error:", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -32,7 +34,10 @@ public class Vista {
 	public Vista() {
 		initialize();
 		Model model = new Model();
-		model.showPartits();
+		
+		Municipi muni = new Municipi("Girona", null);
+		
+		model.showPartitByMunicipi(muni);
 	}
 
 	/**
