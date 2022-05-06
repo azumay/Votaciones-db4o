@@ -35,7 +35,7 @@ public class Vista {
 		initialize();
 		Model model = new Model();
 		
-		Municipi muni = new Municipi("Girona", null);
+		Municipi muni = new Municipi("Avinyonet del Penedès", null);
 		
 		model.showPartitByMunicipi(muni);
 	}
