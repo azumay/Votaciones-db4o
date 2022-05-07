@@ -14,6 +14,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /* IMPORT MODELOS */
 import model.Model;
@@ -25,6 +27,9 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
+
+import controller.Controller;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -38,6 +43,7 @@ public class VotacionsGUI {
 	private JTable tablaVotacions;
 	private Model model;
 	private JTextField inputMunicipi;
+	private Controller controllerHelper;
 
 	/**
 	 * Launch the application.
@@ -61,9 +67,7 @@ public class VotacionsGUI {
 	public VotacionsGUI() {
 		generarGui();
 		this.model = new Model();
-
-		// Municipi muni = new Municipi("Avinyonet del Penedès", null);
-		// model.showPartitByMunicipi(muni);
+		this.controllerHelper = new Controller();
 
 		//Partit partido = new Partit("VOX", null);
 		// model.showPartitByPartit(partido);
@@ -163,11 +167,25 @@ public class VotacionsGUI {
 		cercaResultatsPerMunicipi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				ArrayList<Resultat> listaResultats = new ArrayList<Resultat>();
-				Municipi nomMunicipi = new Municipi(inputMunicipi.getText(), null);
+				//Creamos una lista de municipis donde recibiremos el resultado de Model
+				ArrayList<Municipi> listaResultats = new ArrayList<Municipi>();
+
+				//Ponemos Mayuscula cada palabra para evitar problemas al buscar en la DB
+				Controller controllerHelper =new Controller();
 				
+				//Obtenemos el valor que nos escribe el usuario y lo formateamos
+				String inputFormateado = controllerHelper.upperText(inputMunicipi.getText());
+				
+				//Creamos un objeto con el nombre de municipio que nos habían pasado
+				Municipi nomMunicipi = new Municipi(inputFormateado, null);
+				
+				//Guardamos el resultado de la busqueda en la ArrayList
 				listaResultats = model.showPartitByMunicipi(nomMunicipi);
+				
+				//Cramos una vista de resultados en el caso de obtener-lo
 				VentanaResultatMunicipi windowResultMuni = new VentanaResultatMunicipi();
+				
+				//Le pasamos la lista de resultados para procesarlo uno a uno en la tabla
 				windowResultMuni.setResultat(listaResultats);
 				windowResultMuni.rellenarTabla();
 				windowResultMuni.setVisible(true);

@@ -14,12 +14,18 @@ import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 
+import controller.Controller;
+import exception.ErrorVotacions;
+import java.text.Normalizer;
+
 public class Model {
 
 	private String db40;
 	private String dataPath;
 	private File f;
+	private Controller controllerHelper;
 	private ObjectContainer db;
+
 
 	HashMap<String, Municipi> newMunicipi;
 	HashMap<String, Partit> newPartit;
@@ -33,7 +39,7 @@ public class Model {
 
 		this.newMunicipi = new HashMap<String, Municipi>();
 		this.newPartit = new HashMap<String, Partit>();
-
+		this.controllerHelper = new Controller();
 		lecturaFichero();
 	}
 
@@ -52,9 +58,11 @@ public class Model {
 				if (!values[0].equalsIgnoreCase("PROVÍNCIA")) {
 
 					// Obtenemos valres de cada linea...
+					String municipi ="";
 					String provincia = values[0].trim();
-					String municipi = values[2].trim();
-
+					if(values[2].trim() != "") {
+					 municipi = controllerHelper.formeteoTexto(values[2].trim());
+					}
 					String siglesPartit = values[3].trim();
 					String nomPartit = values[4].trim();
 
@@ -128,6 +136,7 @@ public class Model {
 			JOptionPane.showMessageDialog(null, e, "Exception detected", JOptionPane.WARNING_MESSAGE);
 		}
 
+	
 	}
 
 	/**
@@ -155,7 +164,7 @@ public class Model {
 	}
 
 	/**
-	 * 2. Llistat de tots els municipis.
+	 * 2. Llistat de tots els municipis. OK
 	 */
 	public ArrayList<Municipi> showMunicipis() {
 		Municipi muni = new Municipi();
@@ -178,32 +187,33 @@ public class Model {
 	}
 
 	/**
-	 * 3. Resultats per partit en un municipi donat.
+	 * 3. Resultats per partit en un municipi donat. OK
 	 */
-	public ArrayList<Resultat> showPartitByMunicipi(Municipi nom) {
-
-		ObjectSet<Municipi> result = this.db.queryByExample(nom);
+	public ArrayList<Municipi> showPartitByMunicipi(Municipi nom) {
 		
-		ArrayList<Resultat> plantilla = new ArrayList<Resultat>();
-		;
+		ArrayList<Municipi> plantilla = new ArrayList<Municipi>();
 
-		while (result.hasNext()) {
-			Resultat iterador = new Resultat();
-			Municipi aux = result.next();
+		try {
+			ObjectSet<Municipi> result = this.db.queryByExample(nom);
+			if(result.size() == 0 ) {
+				throw new ErrorVotacions("No existen datos con ese municipio", "E301");
+			}
+			
+			Municipi aux = result.get(0);
+			Municipi iterador = new Municipi();
 
-			ArrayList<Resultat> auxResult = aux.getResultats();
+			for (int x = 0; x < result.size(); x++) {
 
-			for (int x = 0; x < aux.getResultats().size(); x++) {
+				iterador.setNom(aux.getNom());
+				iterador.setProvincia(aux.getProvincia());
+				iterador.setResultats(result.get(x).getResultats());
+				// iterador.setVots(auxResult.get(x).getVots());
 
-				iterador.setMunicipi(auxResult.get(x).getMunicipi());
-				iterador.setPartit(auxResult.get(x).getPartit());
-				iterador.setVots(auxResult.get(x).getVots());
-				
 				plantilla.add(iterador);
-				//System.out.println(auxResult.get(x).getPartit().getSigles() + " " + auxResult.get(x).getVots());
-
 			}
 
+		} catch (Exception f) {
+			JOptionPane.showMessageDialog(null, f, "Exception detected", JOptionPane.WARNING_MESSAGE);
 		}
 		return plantilla;
 	}

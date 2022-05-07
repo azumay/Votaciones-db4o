@@ -25,17 +25,15 @@ import javax.swing.JButton;
 
 public class VentanaResultatMunicipi extends JFrame {
 
-
-	ArrayList <Resultat> resultat;
+	ArrayList<Municipi> resultat;
 
 	private JTable table;
 	private DefaultTableModel dtm;
 	private JPanel panel;
 
-
 	public VentanaResultatMunicipi() {
 		setSize(600, 343);
-		setTitle("Consulta de Municipis");
+		setTitle("Resultats per Municipis");
 		setResizable(false);
 
 		Dimension sizeH, sizeW;
@@ -56,7 +54,7 @@ public class VentanaResultatMunicipi extends JFrame {
 		setContentPane(panel);
 		panel.setLayout(null);
 
-		JLabel lb1Titulo = new JLabel("LLISTAT DE MUNICIPIS");
+		JLabel lb1Titulo = new JLabel("RESULTATS PER MUNICIPIS");
 		lb1Titulo.setForeground(Color.WHITE);
 		lb1Titulo.setBackground(new Color(34, 46, 53));
 		lb1Titulo.setOpaque(true);
@@ -65,38 +63,30 @@ public class VentanaResultatMunicipi extends JFrame {
 		lb1Titulo.setBounds(0, 0, 600, 50);
 		panel.add(lb1Titulo);
 
-		
-		
-		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(25, 61, 550, 208);
-		
-			
+
 		panel.add(scrollPane);
 
 		table = new JTable();
 
-		
 		dtm = new DefaultTableModel();
-		
+
 		table.setModel(dtm);
-		
+
 		dtm.addColumn("MUNICIPI");
 		dtm.addColumn("SIGLES PARTIT");
 		dtm.addColumn("VOTS");
-		
-		
-		
-		
-		
+		dtm.addColumn("PERCENT");
+
 		scrollPane.setViewportView(table);
-		
+
 		JButton btnTancar = new JButton("Tancar");
 		btnTancar.setForeground(Color.WHITE);
 		btnTancar.setBackground(new Color(153, 0, 0));
 		btnTancar.setBounds(241, 281, 117, 25);
 		panel.add(btnTancar);
-		
+
 		btnTancar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
@@ -107,29 +97,27 @@ public class VentanaResultatMunicipi extends JFrame {
 
 	public void rellenarTabla() {
 
-		ArrayList<Resultat> listaResultats = this.resultat;
-		
-		
-		for (Resultat resultat : listaResultats) {
-			Object[] fila = new Object[2];
-			
-			fila[0]=resultat.getMunicipi().getNom();
-			fila[1]=resultat.getPartit().getSigles();
-			fila[2]=resultat.getVots();
-			
+		ArrayList<Municipi> listaResultats = this.resultat;
+
+		for (int x = 0; x < listaResultats.get(0).getResultats().size(); x++) {
+			Object[] fila = new Object[4];
+
+			fila[0] = listaResultats.get(0).getResultats().get(x).getMunicipi().getNom();
+			fila[1] = listaResultats.get(0).getResultats().get(x).getPartit().getSigles();
+			fila[2] = listaResultats.get(0).getResultats().get(x).getVots();
+			fila[3] = listaResultats.get(0).getResultats().get(x).getPercent()+"%";
+
 			dtm.addRow(fila);
-			
 		}
 
 	}
 
-	public ArrayList<Resultat> getResultat() {
+	public ArrayList<Municipi> getResultat() {
 		return resultat;
 	}
 
-	public void setResultat(ArrayList<Resultat> resultat) {
+	public void setResultat(ArrayList<Municipi> resultat) {
 		this.resultat = resultat;
 	}
-
 
 }
