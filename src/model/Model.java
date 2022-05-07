@@ -180,23 +180,32 @@ public class Model {
 	/**
 	 * 3. Resultats per partit en un municipi donat.
 	 */
-	public void showPartitByMunicipi(Municipi nom) {
+	public ArrayList<Resultat> showPartitByMunicipi(Municipi nom) {
 
 		ObjectSet<Municipi> result = this.db.queryByExample(nom);
+		
+		ArrayList<Resultat> plantilla = new ArrayList<Resultat>();
+		;
 
 		while (result.hasNext()) {
-
+			Resultat iterador = new Resultat();
 			Municipi aux = result.next();
 
 			ArrayList<Resultat> auxResult = aux.getResultats();
 
 			for (int x = 0; x < aux.getResultats().size(); x++) {
 
-				System.out.println(auxResult.get(x).getPartit().getSigles() + " " + auxResult.get(x).getVots());
+				iterador.setMunicipi(auxResult.get(x).getMunicipi());
+				iterador.setPartit(auxResult.get(x).getPartit());
+				iterador.setVots(auxResult.get(x).getVots());
+				
+				plantilla.add(iterador);
+				//System.out.println(auxResult.get(x).getPartit().getSigles() + " " + auxResult.get(x).getVots());
 
 			}
 
 		}
+		return plantilla;
 	}
 
 	/**

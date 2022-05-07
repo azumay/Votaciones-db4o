@@ -18,20 +18,22 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import model.Municipi;
+import model.Resultat;
+
 import java.awt.Color;
 import javax.swing.JButton;
 
-public class VentanaMunicipis extends JFrame {
+public class VentanaResultatMunicipi extends JFrame {
 
 
-	ArrayList <Municipi> municipi;
+	ArrayList <Resultat> resultat;
 
 	private JTable table;
 	private DefaultTableModel dtm;
 	private JPanel panel;
 
 
-	public VentanaMunicipis() {
+	public VentanaResultatMunicipi() {
 		setSize(600, 343);
 		setTitle("Consulta de Municipis");
 		setResizable(false);
@@ -79,9 +81,10 @@ public class VentanaMunicipis extends JFrame {
 		
 		table.setModel(dtm);
 		
-		
 		dtm.addColumn("MUNICIPI");
-		dtm.addColumn("PROVINCÍA");
+		dtm.addColumn("SIGLES PARTIT");
+		dtm.addColumn("VOTS");
+		
 		
 		
 		
@@ -104,14 +107,15 @@ public class VentanaMunicipis extends JFrame {
 
 	public void rellenarTabla() {
 
-		ArrayList<Municipi> listaMunicipis = this.municipi;
+		ArrayList<Resultat> listaResultats = this.resultat;
 		
 		
-		for (Municipi municipi : listaMunicipis) {
+		for (Resultat resultat : listaResultats) {
 			Object[] fila = new Object[2];
 			
-			fila[0]=municipi.getNom();
-			fila[1]=municipi.getProvincia();
+			fila[0]=resultat.getMunicipi().getNom();
+			fila[1]=resultat.getPartit().getSigles();
+			fila[2]=resultat.getVots();
 			
 			dtm.addRow(fila);
 			
@@ -119,13 +123,13 @@ public class VentanaMunicipis extends JFrame {
 
 	}
 
-
-	public void setMunicipi(ArrayList<Municipi> municipi) {
-		this.municipi = municipi;
+	public ArrayList<Resultat> getResultat() {
+		return resultat;
 	}
 
-	public ArrayList<Municipi> getMunicipi() {
-		return municipi;
+	public void setResultat(ArrayList<Resultat> resultat) {
+		this.resultat = resultat;
 	}
-	
+
+
 }

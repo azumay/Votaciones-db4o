@@ -1,4 +1,4 @@
-package app;
+package view;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -21,21 +21,23 @@ import model.Municipi;
 import model.Partit;
 import model.Resultat;
 
-/* IMPORT VISTAS */
-import view.VentanaPartit;
-import view.VentanaMunicipis;
-
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
+import java.awt.Font;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
 
-public class Vista {
+public class VotacionsGUI {
 
 	private JFrame frame;
 	private JTable table;
 	private JTable tablaVotacions;
 	private Model model;
+	private JTextField inputMunicipi;
 
 	/**
 	 * Launch the application.
@@ -44,7 +46,7 @@ public class Vista {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Vista window = new Vista();
+					VotacionsGUI window = new VotacionsGUI();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, e.toString(), "Error:", JOptionPane.ERROR_MESSAGE);
@@ -56,22 +58,20 @@ public class Vista {
 	/**
 	 * Create the application.
 	 */
-	public Vista() {
+	public VotacionsGUI() {
 		generarGui();
 		this.model = new Model();
 
 		// Municipi muni = new Municipi("Avinyonet del Penedès", null);
-
 		// model.showPartitByMunicipi(muni);
 
-		Partit partido = new Partit("VOX", null);
+		//Partit partido = new Partit("VOX", null);
 		// model.showPartitByPartit(partido);
 
 		// Municipi muni = new Municipi(null, "Barcelona");
-
 		// model.showResultByProvincia(muni);
 
-		// model.showPartits();
+
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class Vista {
 
 		/* BTN CONSULTA PARTITS*/
 		JButton btnMostrar = new JButton("Mostrar Partits");
-		btnMostrar.setBounds(41, 219, 183, 42);
+		btnMostrar.setBounds(26, 42, 183, 42);
 		btnMostrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -117,24 +117,66 @@ public class Vista {
 		
 		/* BTN CONSULTA PARTITS*/
 		JButton btnMostrarMunicipis = new JButton("Mostrar Municipis");
-		btnMostrarMunicipis.setBounds(255, 219, 183, 42);
+		btnMostrarMunicipis.setBounds(26, 105, 183, 42);
 		btnMostrarMunicipis.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				ArrayList<Municipi> listaMunicipis = new ArrayList<Municipi>();
 				listaMunicipis = model.showMunicipis();
 
-				VentanaMunicipis windowMunicipis = new VentanaMunicipis();
-				windowMunicipis.setMunicipi(listaMunicipis);
-				windowMunicipis.rellenarTabla();
-				windowMunicipis.setVisible(true);
+				VentanaMunicipi windowMunicipi = new VentanaMunicipi();
+				windowMunicipi.setMunicipi(listaMunicipis);
+				windowMunicipi.rellenarTabla();
+				windowMunicipi.setVisible(true);
 
 			}
 		});
-		
-		
-		
 		frame.getContentPane().add(btnMostrarMunicipis);
+		
+		/* ZONA DE CONSULTA RESULTAT PER MUNICIPI DONAT*/
+		
+		JPanel panelConsulta3 = new JPanel();
+		panelConsulta3.setBounds(26, 244, 229, 149);
+		frame.getContentPane().add(panelConsulta3);
+		panelConsulta3.setLayout(null);
+		
+		inputMunicipi = new JTextField();
+		inputMunicipi.setBounds(27, 55, 164, 32);
+		panelConsulta3.add(inputMunicipi);
+		inputMunicipi.setColumns(10);
+		
+	
+		JLabel lblBuscarResultatsPer = new JLabel();
+		lblBuscarResultatsPer.setForeground(new Color(34, 46, 53));
+		lblBuscarResultatsPer.setOpaque(true);
+		lblBuscarResultatsPer.setHorizontalAlignment(SwingConstants.CENTER);
+		lblBuscarResultatsPer.setFont(new Font("Dialog", Font.BOLD, 15));
+		
+		lblBuscarResultatsPer.setText("<html><p style=\"text-align:center\">Buscar resultats <br>per municipi");
+		lblBuscarResultatsPer.setToolTipText("");
+		lblBuscarResultatsPer.setBounds(27, 12, 164, 41);
+		panelConsulta3.add(lblBuscarResultatsPer);
+		
+		JButton cercaResultatsPerMunicipi = new JButton("Cerca");
+		cercaResultatsPerMunicipi.setBounds(27, 99, 164, 25);
+		panelConsulta3.add(cercaResultatsPerMunicipi);
+		cercaResultatsPerMunicipi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				ArrayList<Resultat> listaResultats = new ArrayList<Resultat>();
+				Municipi nomMunicipi = new Municipi(inputMunicipi.getText(), null);
+				
+				listaResultats = model.showPartitByMunicipi(nomMunicipi);
+				VentanaResultatMunicipi windowResultMuni = new VentanaResultatMunicipi();
+				windowResultMuni.setResultat(listaResultats);
+				windowResultMuni.rellenarTabla();
+				windowResultMuni.setVisible(true);
+				
+				
+				
+			}
+		});
+		cercaResultatsPerMunicipi.setFont(new Font("Dialog", Font.BOLD, 12));
 
 		// Generar el menu superior
 		JMenuBar barra = new JMenuBar();
@@ -164,5 +206,12 @@ public class Vista {
 			}
 		});
 
+	}
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
 	}
 }

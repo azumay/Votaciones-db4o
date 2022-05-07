@@ -14,6 +14,9 @@ public class Resultat {
 		this.vots = vots;
 		this.percent = percent;
 	}
+    public Resultat() {
+    	
+    }
     
     
 	public Partit getPartit() {
