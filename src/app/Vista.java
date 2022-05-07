@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 import model.Model;
 import model.Municipi;
+import model.Partit;
 
 public class Vista {
 
@@ -35,9 +36,18 @@ public class Vista {
 		initialize();
 		Model model = new Model();
 		
-		Municipi muni = new Municipi("Avinyonet del Penedès", null);
+		//Municipi muni = new Municipi("Avinyonet del Penedès", null);
 		
-		model.showPartitByMunicipi(muni);
+		//model.showPartitByMunicipi(muni);
+		
+		Partit partido = new Partit("VOX", null);
+		//model.showPartitByPartit(partido);
+		
+		Municipi muni = new Municipi(null, "Barcelona");
+		
+		model.showResultByProvincia(muni);
+		
+		//model.showPartits();
 	}
 
 	/**
