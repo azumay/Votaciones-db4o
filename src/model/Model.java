@@ -130,47 +130,51 @@ public class Model {
 
 	}
 
-	public void comprovarMunicipi(Municipi m) {
-
-		ObjectSet result = this.db.queryByExample(m);
-
-		// System.out.println(result.size());
-		while (result.hasNext()) {
-			// System.out.println(result.next());
-		}
-		if (result.size() == 0) {
-			this.db.store(m);
-		}
-
-	}
-
 	/**
-	 * 1. Llistat de tots els partits.
+	 * 1. Llistat de tots els partits. OK
 	 */
 
-	public void showPartits() {
+	public ArrayList<Partit> showPartits() {
 		Partit partit = new Partit();
 		ObjectSet<Partit> result = this.db.queryByExample(partit);
 
+		ArrayList<Partit> plantilla = new ArrayList<Partit>();
+		;
+
 		while (result.hasNext()) {
+			Partit interador = new Partit();
 			Partit aux = result.next();
-			System.out.println(aux.getNom());
-			System.out.println(aux.getSigles());
+
+			interador.setNom(aux.getNom());
+			interador.setSigles(aux.getSigles());
+
+			plantilla.add(interador);
+
 		}
+		return plantilla;
 	}
 
 	/**
 	 * 2. Llistat de tots els municipis.
 	 */
-	public void showMunicipis() {
+	public ArrayList<Municipi> showMunicipis() {
 		Municipi muni = new Municipi();
 		ObjectSet<Municipi> result = this.db.queryByExample(muni);
 
+		ArrayList<Municipi> plantilla = new ArrayList<Municipi>();
+		;
+
 		while (result.hasNext()) {
+			Municipi iterador = new Municipi();
 			Municipi aux = result.next();
-			System.out.println(aux.getNom());
-			System.out.println(aux.getProvincia());
+
+			iterador.setNom(aux.getNom());
+			iterador.setProvincia(aux.getProvincia());
+
+			plantilla.add(iterador);
 		}
+
+		return plantilla;
 	}
 
 	/**
@@ -213,33 +217,26 @@ public class Model {
 
 		}
 	}
-	
+
 	/**
-	 * 5. Resultats per partit en una província donada. 
+	 * 5. Resultats per partit en una província donada.
 	 */
 
 	public void showResultByProvincia(Municipi objMunicipi) {
-		
+
 		Resultat result = new Resultat(null, objMunicipi, 0, 0);
-		
+
 		ObjectSet<Resultat> queryResult = db.queryByExample(result);
-		
+
 		while (queryResult.hasNext()) {
 
 			Resultat auxResultat = queryResult.next();
 
-			System.out.println(auxResultat.getVots() + " " + auxResultat.getPartit().getSigles() +" - "+auxResultat.getMunicipi().getNom() );
+			System.out.println(auxResultat.getVots() + " " + auxResultat.getPartit().getSigles() + " - "
+					+ auxResultat.getMunicipi().getNom());
 
 		}
-		
+
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }
