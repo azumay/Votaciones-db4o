@@ -26,7 +26,6 @@ public class Model {
 	private Controller controllerHelper;
 	private ObjectContainer db;
 
-
 	HashMap<String, Municipi> newMunicipi;
 	HashMap<String, Partit> newPartit;
 
@@ -58,10 +57,10 @@ public class Model {
 				if (!values[0].equalsIgnoreCase("PROVÍNCIA")) {
 
 					// Obtenemos valres de cada linea...
-					String municipi ="";
+					String municipi = "";
 					String provincia = values[0].trim();
-					if(values[2].trim() != "") {
-					 municipi = controllerHelper.formeteoTexto(values[2].trim());
+					if (values[2].trim() != "") {
+						municipi = controllerHelper.formeteoTexto(values[2].trim());
 					}
 					String siglesPartit = values[3].trim();
 					String nomPartit = values[4].trim();
@@ -136,7 +135,6 @@ public class Model {
 			JOptionPane.showMessageDialog(null, e, "Exception detected", JOptionPane.WARNING_MESSAGE);
 		}
 
-	
 	}
 
 	/**
@@ -190,15 +188,15 @@ public class Model {
 	 * 3. Resultats per partit en un municipi donat. OK
 	 */
 	public ArrayList<Municipi> showPartitByMunicipi(Municipi nom) {
-		
+
 		ArrayList<Municipi> plantilla = new ArrayList<Municipi>();
 
 		try {
 			ObjectSet<Municipi> result = this.db.queryByExample(nom);
-			if(result.size() == 0 ) {
+			if (result.size() == 0) {
 				throw new ErrorVotacions("No existen datos con ese municipio", "E301");
 			}
-			
+
 			Municipi aux = result.get(0);
 			Municipi iterador = new Municipi();
 
@@ -207,7 +205,6 @@ public class Model {
 				iterador.setNom(aux.getNom());
 				iterador.setProvincia(aux.getProvincia());
 				iterador.setResultats(result.get(x).getResultats());
-				// iterador.setVots(auxResult.get(x).getVots());
 
 				plantilla.add(iterador);
 			}
@@ -219,43 +216,80 @@ public class Model {
 	}
 
 	/**
-	 * 4. Resultats per municipi d'un partit donat.
+	 * 4. Resultats per municipi d'un partit donat. OK
 	 */
 
-	public void showPartitByPartit(Partit sigles) {
+	public ArrayList<Resultat> showPartitByPartit(Partit sigles) {
 
-		Resultat result = new Resultat(sigles, null, 0, 0);
+		ArrayList<Resultat> plantilla = new ArrayList<Resultat>();
 
-		ObjectSet<Resultat> queryResult = db.queryByExample(result);
+		try {
 
-		while (queryResult.hasNext()) {
+			Resultat result = new Resultat(sigles, null, 0, 0);
 
-			Resultat auxResultat = queryResult.next();
+			ObjectSet<Resultat> queryResult = db.queryByExample(result);
 
-			System.out.println(auxResultat.getVots() + " " + auxResultat.getMunicipi().getNom());
+			if (queryResult.size() == 0) {
+				throw new ErrorVotacions("No existen datos con ese partido", "E401");
+			}
 
+			for (int x = 0; x < queryResult.size(); x++) {
+				Resultat iterador = new Resultat();
+
+				Resultat auxResultat = queryResult.next();
+
+				if (!queryResult.get(x).getMunicipi().getNom().equals("")) {
+
+					iterador.setMunicipi(auxResultat.getMunicipi());
+					iterador.setPartit(queryResult.get(x).getPartit());
+					iterador.setVots(queryResult.get(x).getVots());
+					iterador.setPercent(queryResult.get(x).getPercent());
+					plantilla.add(iterador);
+
+				}
+
+			}
+		} catch (Exception f) {
+			JOptionPane.showMessageDialog(null, f, "Exception detected", JOptionPane.WARNING_MESSAGE);
 		}
+		return plantilla;
 	}
 
 	/**
 	 * 5. Resultats per partit en una província donada.
 	 */
 
-	public void showResultByProvincia(Municipi objMunicipi) {
+	public ArrayList<Resultat> showResultByProvincia(Municipi objMunicipi) {
 
-		Resultat result = new Resultat(null, objMunicipi, 0, 0);
+		ArrayList<Resultat> plantilla = new ArrayList<Resultat>();
+		try {
+			Resultat result = new Resultat(null, objMunicipi, 0, 0);
 
-		ObjectSet<Resultat> queryResult = db.queryByExample(result);
+			ObjectSet<Resultat> queryResult = db.queryByExample(result);
+			if (queryResult.size() == 0) {
+				throw new ErrorVotacions("No existen datos con esa provincia", "E501");
+			}
 
-		while (queryResult.hasNext()) {
+			for (int x = 0; x < queryResult.size(); x++) {
+				Resultat iterador = new Resultat();
 
-			Resultat auxResultat = queryResult.next();
+				Resultat auxResultat = queryResult.next();
 
-			System.out.println(auxResultat.getVots() + " " + auxResultat.getPartit().getSigles() + " - "
-					+ auxResultat.getMunicipi().getNom());
+				if (!queryResult.get(x).getMunicipi().getNom().equals("")) {
 
+					iterador.setMunicipi(auxResultat.getMunicipi());
+					iterador.setPartit(queryResult.get(x).getPartit());
+					iterador.setVots(queryResult.get(x).getVots());
+					iterador.setPercent(queryResult.get(x).getPercent());
+					plantilla.add(iterador);
+
+				}
+
+			}
+		} catch (Exception f) {
+			JOptionPane.showMessageDialog(null, f, "Exception detected", JOptionPane.WARNING_MESSAGE);
 		}
-
+		return plantilla;
 	}
 
 }
