@@ -10,19 +10,19 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+/* DB4O */
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 
 import controller.Controller;
 import exception.ErrorVotacions;
-import java.text.Normalizer;
+
 
 public class Model {
 
 	private String db40;
 	private String dataPath;
-	private File f;
 	private Controller controllerHelper;
 	private ObjectContainer db;
 
@@ -30,7 +30,7 @@ public class Model {
 	HashMap<String, Partit> newPartit;
 
 	public Model() {
-		this.db40 = "BDOOVotacions.db4o";
+		this.db40 = "Votacions.db4o";
 		this.dataPath = "lib/votacions.csv";
 
 		new File(db40).delete();
@@ -44,8 +44,8 @@ public class Model {
 
 	public void lecturaFichero() {
 		try {
-
-			// Obrirem el fitxer i iniciarem el buffer per poder llegir aquest fitxer
+		
+			// Empezamos la lectura del CSV
 			FileReader readFile = new FileReader(this.dataPath);
 			BufferedReader buffer = new BufferedReader(readFile);
 			String linea;
@@ -53,16 +53,16 @@ public class Model {
 			while ((linea = buffer.readLine()) != null) {
 				String values[] = linea.split(";");
 
-				// Omitimos el titulo del csv
+				// Omitimos el titulo del CSV con la primera columna
 				if (!values[0].equalsIgnoreCase("PROVÍNCIA")) {
 
-					// Obtenemos valres de cada linea...
+					// Obtenemos los valores de cada linea...
 					String municipi = "";
 					String provincia = values[0].trim();
 					if (values[2].trim() != "") {
 						municipi = controllerHelper.formeteoTexto(values[2].trim());
 					}
-					String siglesPartit = values[3].trim();
+					String siglesPartit = values[3].trim().toUpperCase();
 					String nomPartit = values[4].trim();
 
 					if (municipi.equals("") && provincia.equals("")) {
@@ -91,7 +91,7 @@ public class Model {
 							percent = "0";
 						}
 
-						/* CONTROL DE PARTIT */
+						/* CONTROL DE PARTIT2 para pasarselo a Municipi */
 						Partit objPartit = null;
 
 						if (!this.newPartit.containsKey(siglesPartit)) {
@@ -132,7 +132,8 @@ public class Model {
 			readFile.close();
 
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, e, "Exception detected", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error al procesar el CSV", e.getMessage(), JOptionPane.WARNING_MESSAGE);
+			
 		}
 
 	}

@@ -6,16 +6,20 @@ import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import java.util.Iterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.awt.Font;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JTable;
 
 /* IMPORT MODELOS */
 import model.Model;
@@ -23,46 +27,24 @@ import model.Municipi;
 import model.Partit;
 import model.Resultat;
 
-import javax.swing.JButton;
-import javax.swing.JTable;
-import javax.swing.JScrollPane;
-import javax.swing.table.DefaultTableModel;
+/* COLECCIONES */
+import java.util.ArrayList;
+
 
 import controller.Controller;
 
-import java.awt.Font;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
+
 
 public class VotacionsGUI {
 
 	private JFrame frame;
-	private JTable table;
-	private JTable tablaVotacions;
 	private Model model;
 	private JTextField inputMunicipi;
 	private Controller controllerHelper;
 	private JTextField inputPartit;
 	private JTextField inputProvincia;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VotacionsGUI window = new VotacionsGUI();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, e.toString(), "Error:", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});
-	}
+	
 
 	/**
 	 * Create the application.
@@ -71,7 +53,6 @@ public class VotacionsGUI {
 		generarGui();
 		this.model = new Model();
 		this.controllerHelper = new Controller();
-
 	}
 
 	/**
@@ -79,7 +60,7 @@ public class VotacionsGUI {
 	 */
 	private void generarGui() {
 
-		/* VENTANA PRINCIPAL */
+		/* VENTANA PRINCIPAL - TAMAÑO FIJO*/
 		frame = new JFrame();
 		frame.setTitle("Votacions");
 		frame.setBounds(100, 100, 850, 565);
@@ -98,8 +79,10 @@ public class VotacionsGUI {
 		this.frame.setLocation(((sizeH.width - sizeW.width) / 2), (sizeH.height - sizeW.height) / 2);
 
 		/* BTN CONSULTA PARTITS */
-		JButton btnMostrar = new JButton("Mostrar Partits");
-		btnMostrar.setBounds(488, 224, 183, 42);
+		
+		JButton btnMostrar = new JButton("<html><p style=\"text-align:center\">Mostrar <br>Partits</p></html>");
+		btnMostrar.setIcon(new ImageIcon(VotacionsGUI.class.getResource("/img/partidos.png")));
+		btnMostrar.setBounds(488, 224, 160, 42);
 		btnMostrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -116,8 +99,10 @@ public class VotacionsGUI {
 		frame.getContentPane().add(btnMostrar);
 
 		/* BTN CONSULTA PARTITS */
-		JButton btnMostrarMunicipis = new JButton("Mostrar Municipis");
-		btnMostrarMunicipis.setBounds(185, 224, 183, 42);
+		
+		JButton btnMostrarMunicipis = new JButton("<html><p style=\"text-align:center\">Mostrar <br>Municipis</p></html>");
+		btnMostrarMunicipis.setIcon(new ImageIcon(VotacionsGUI.class.getResource("/img/municipi.png")));
+		btnMostrarMunicipis.setBounds(208, 224, 160, 42);
 		btnMostrarMunicipis.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -141,23 +126,13 @@ public class VotacionsGUI {
 		panelConsulta3.setLayout(null);
 
 		inputMunicipi = new JTextField();
-		inputMunicipi.setBounds(27, 55, 164, 32);
+		inputMunicipi.setBounds(27, 54, 164, 32);
 		panelConsulta3.add(inputMunicipi);
 		inputMunicipi.setColumns(10);
 
-		JLabel lblBuscarResultatsPer = new JLabel();
-		lblBuscarResultatsPer.setForeground(new Color(34, 46, 53));
-		lblBuscarResultatsPer.setOpaque(true);
-		lblBuscarResultatsPer.setHorizontalAlignment(SwingConstants.CENTER);
-		lblBuscarResultatsPer.setFont(new Font("Dialog", Font.BOLD, 15));
-
-		lblBuscarResultatsPer.setText("<html><p style=\"text-align:center\">Buscar resultats <br>per municipi");
-		lblBuscarResultatsPer.setToolTipText("");
-		lblBuscarResultatsPer.setBounds(27, 12, 164, 41);
-		panelConsulta3.add(lblBuscarResultatsPer);
-
 		JButton cercaResultatsPerMunicipi = new JButton("Cerca");
-		cercaResultatsPerMunicipi.setBounds(27, 99, 164, 25);
+		cercaResultatsPerMunicipi.setIcon(new ImageIcon(VotacionsGUI.class.getResource("/img/lupa.png")));
+		cercaResultatsPerMunicipi.setBounds(27, 98, 164, 25);
 		panelConsulta3.add(cercaResultatsPerMunicipi);
 		cercaResultatsPerMunicipi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -188,6 +163,16 @@ public class VotacionsGUI {
 			}
 		});
 		cercaResultatsPerMunicipi.setFont(new Font("Dialog", Font.BOLD, 12));
+		
+		JLabel lblbuscarResultatsper_3 = new JLabel();
+		lblbuscarResultatsper_3.setToolTipText("");
+		lblbuscarResultatsper_3.setText("<html><p style=\"text-align:center\">Buscar resultats <br>per MUNICIPI");
+		lblbuscarResultatsper_3.setOpaque(true);
+		lblbuscarResultatsper_3.setHorizontalAlignment(SwingConstants.CENTER);
+		lblbuscarResultatsper_3.setForeground(new Color(34, 46, 53));
+		lblbuscarResultatsper_3.setFont(new Font("Dialog", Font.BOLD, 15));
+		lblbuscarResultatsper_3.setBounds(27, 12, 164, 41);
+		panelConsulta3.add(lblbuscarResultatsper_3);
 
 		/* ZONA DE CONSULTA RESULTAT PER PARTIT DONAT */
 
@@ -203,7 +188,7 @@ public class VotacionsGUI {
 
 		JLabel lblbuscarResultatsper = new JLabel();
 		lblbuscarResultatsper.setToolTipText("");
-		lblbuscarResultatsper.setText("<html><p style=\"text-align:center\">Buscar resultats <br>per partit");
+		lblbuscarResultatsper.setText("<html><p style=\"text-align:center\">Buscar resultats <br>per PARTIT");
 		lblbuscarResultatsper.setOpaque(true);
 		lblbuscarResultatsper.setHorizontalAlignment(SwingConstants.CENTER);
 		lblbuscarResultatsper.setForeground(new Color(34, 46, 53));
@@ -212,6 +197,7 @@ public class VotacionsGUI {
 		panelConsulta4.add(lblbuscarResultatsper);
 
 		JButton cercaResultatsPerPartit = new JButton("Cerca");
+		cercaResultatsPerPartit.setIcon(new ImageIcon(VotacionsGUI.class.getResource("/img/lupa.png")));
 		cercaResultatsPerPartit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -221,7 +207,7 @@ public class VotacionsGUI {
 				// Obtenemos el valor que nos escribe el usuario y lo ponemos en MAYUSCULAS
 				String inputFormateado = inputPartit.getText().toUpperCase();
 
-				// Creamos un objeto con el nombre de municipio que nos habían pasado
+				// Creamos un objeto con el nombre del partido que nos habían pasado
 				Partit nomMunicipi = new Partit(inputFormateado, null);
 
 				// Guardamos el resultado de la busqueda en la ArrayList
@@ -230,7 +216,7 @@ public class VotacionsGUI {
 				// Cramos una vista de resultados en el caso de obtener-lo
 				VentanaResultatPartit windowResultPartit = new VentanaResultatPartit();
 
-				// Le pasamos la lista de resultados para procesarlo uno a uno en la tabla
+				// Le pasamos la lista de resultados para agregarlos uno a uno en la tabla
 				windowResultPartit.setResultat(listaResultats);
 				windowResultPartit.rellenarTabla();
 				windowResultPartit.setVisible(true);
@@ -242,6 +228,7 @@ public class VotacionsGUI {
 		panelConsulta4.add(cercaResultatsPerPartit);
 
 		/* ZONA DE CONSULTA RESULTAT PER PROVINCIA DONAT */
+		
 		JPanel panelConsulta5 = new JPanel();
 		panelConsulta5.setLayout(null);
 		panelConsulta5.setBounds(585, 334, 229, 149);
@@ -254,7 +241,7 @@ public class VotacionsGUI {
 
 		JLabel lblbuscarResultatsper_1 = new JLabel();
 		lblbuscarResultatsper_1.setToolTipText("");
-		lblbuscarResultatsper_1.setText("<html><p style=\"text-align:center\">Buscar resultats <br>per provincía");
+		lblbuscarResultatsper_1.setText("<html><p style=\"text-align:center\">Buscar resultats <br>per PROVINCÍA");
 		lblbuscarResultatsper_1.setOpaque(true);
 		lblbuscarResultatsper_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblbuscarResultatsper_1.setForeground(new Color(34, 46, 53));
@@ -263,6 +250,7 @@ public class VotacionsGUI {
 		panelConsulta5.add(lblbuscarResultatsper_1);
 
 		JButton cercaResultatsPerProvincia = new JButton("Cerca");
+		cercaResultatsPerProvincia.setIcon(new ImageIcon(VotacionsGUI.class.getResource("/img/lupa.png")));
 		cercaResultatsPerProvincia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -272,7 +260,7 @@ public class VotacionsGUI {
 				// Obtenemos el valor que nos escribe el usuario y lo formateamos
 				String inputFormateado = controllerHelper.upperText(inputProvincia.getText());
 
-				// Creamos un objeto con el nombre de la provincia que nos han pasado
+				// Creamos un objeto con el nombre de la PROVINCIA que nos han pasado
 				Municipi nomProvincia = new Municipi(null, inputFormateado);
 
 				// Guardamos el resultado de la busqueda en la ArrayList
@@ -293,15 +281,17 @@ public class VotacionsGUI {
 		panelConsulta5.add(cercaResultatsPerProvincia);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon("/home/xyamuza/eclipse-workspace/Act2/src/img/banner.jpg"));
-		lblNewLabel.setBounds(-72, 0, 945, 190);
+		lblNewLabel.setIcon(new ImageIcon(VotacionsGUI.class.getResource("/img/banner-App.png")));
+		lblNewLabel.setBounds(0, -18, 997, 230);
 		frame.getContentPane().add(lblNewLabel);
 
 		// Generar el menu superior
 		JMenuBar barra = new JMenuBar();
 		JMenu programa = new JMenu("Menu");
 		JMenuItem acerca = new JMenuItem("Acerca de...");
+		acerca.setIcon(new ImageIcon(VotacionsGUI.class.getResource("/img/info.png")));
 		JMenuItem salir = new JMenuItem("Salir");
+		salir.setIcon(new ImageIcon(VotacionsGUI.class.getResource("/img/close.png")));
 
 		this.frame.setJMenuBar(barra);
 		barra.add(programa);
