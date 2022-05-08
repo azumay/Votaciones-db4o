@@ -35,6 +35,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 
 public class VotacionsGUI {
 
@@ -71,12 +72,6 @@ public class VotacionsGUI {
 		this.model = new Model();
 		this.controllerHelper = new Controller();
 
-		
-
-		// Municipi muni = new Municipi(null, "Barcelona");
-		// model.showResultByProvincia(muni);
-
-
 	}
 
 	/**
@@ -87,7 +82,7 @@ public class VotacionsGUI {
 		/* VENTANA PRINCIPAL */
 		frame = new JFrame();
 		frame.setTitle("Votacions");
-		frame.setBounds(100, 100, 850, 465);
+		frame.setBounds(100, 100, 850, 565);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.getContentPane().setBackground(new Color(34, 46, 53));
@@ -102,9 +97,9 @@ public class VotacionsGUI {
 
 		this.frame.setLocation(((sizeH.width - sizeW.width) / 2), (sizeH.height - sizeW.height) / 2);
 
-		/* BTN CONSULTA PARTITS*/
+		/* BTN CONSULTA PARTITS */
 		JButton btnMostrar = new JButton("Mostrar Partits");
-		btnMostrar.setBounds(26, 42, 183, 42);
+		btnMostrar.setBounds(488, 224, 183, 42);
 		btnMostrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -119,10 +114,10 @@ public class VotacionsGUI {
 			}
 		});
 		frame.getContentPane().add(btnMostrar);
-		
-		/* BTN CONSULTA PARTITS*/
+
+		/* BTN CONSULTA PARTITS */
 		JButton btnMostrarMunicipis = new JButton("Mostrar Municipis");
-		btnMostrarMunicipis.setBounds(26, 105, 183, 42);
+		btnMostrarMunicipis.setBounds(185, 224, 183, 42);
 		btnMostrarMunicipis.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -137,56 +132,55 @@ public class VotacionsGUI {
 			}
 		});
 		frame.getContentPane().add(btnMostrarMunicipis);
-		
-		/* ZONA DE CONSULTA RESULTAT PER MUNICIPI DONAT*/
-		
+
+		/* ZONA DE CONSULTA RESULTAT PER MUNICIPI DONAT */
+
 		JPanel panelConsulta3 = new JPanel();
-		panelConsulta3.setBounds(26, 244, 229, 149);
+		panelConsulta3.setBounds(25, 334, 229, 149);
 		frame.getContentPane().add(panelConsulta3);
 		panelConsulta3.setLayout(null);
-		
+
 		inputMunicipi = new JTextField();
 		inputMunicipi.setBounds(27, 55, 164, 32);
 		panelConsulta3.add(inputMunicipi);
 		inputMunicipi.setColumns(10);
-		
-	
+
 		JLabel lblBuscarResultatsPer = new JLabel();
 		lblBuscarResultatsPer.setForeground(new Color(34, 46, 53));
 		lblBuscarResultatsPer.setOpaque(true);
 		lblBuscarResultatsPer.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBuscarResultatsPer.setFont(new Font("Dialog", Font.BOLD, 15));
-		
+
 		lblBuscarResultatsPer.setText("<html><p style=\"text-align:center\">Buscar resultats <br>per municipi");
 		lblBuscarResultatsPer.setToolTipText("");
 		lblBuscarResultatsPer.setBounds(27, 12, 164, 41);
 		panelConsulta3.add(lblBuscarResultatsPer);
-		
+
 		JButton cercaResultatsPerMunicipi = new JButton("Cerca");
 		cercaResultatsPerMunicipi.setBounds(27, 99, 164, 25);
 		panelConsulta3.add(cercaResultatsPerMunicipi);
 		cercaResultatsPerMunicipi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				//Creamos una lista de municipis donde recibiremos el resultado de Model
+
+				// Creamos una lista de municipis donde recibiremos el resultado de Model
 				ArrayList<Municipi> listaResultats = new ArrayList<Municipi>();
 
-				//Ponemos Mayuscula cada palabra para evitar problemas al buscar en la DB
-				Controller controllerHelper =new Controller();
-				
-				//Obtenemos el valor que nos escribe el usuario y lo formateamos
+				// Ponemos Mayuscula cada palabra para evitar problemas al buscar en la DB
+				Controller controllerHelper = new Controller();
+
+				// Obtenemos el valor que nos escribe el usuario y lo formateamos
 				String inputFormateado = controllerHelper.upperText(inputMunicipi.getText());
-				
-				//Creamos un objeto con el nombre de municipio que nos habían pasado
+
+				// Creamos un objeto con el nombre de municipio que nos habían pasado
 				Municipi nomMunicipi = new Municipi(inputFormateado, null);
-				
-				//Guardamos el resultado de la busqueda en la ArrayList
+
+				// Guardamos el resultado de la busqueda en la ArrayList
 				listaResultats = model.showPartitByMunicipi(nomMunicipi);
-				
-				//Cramos una vista de resultados en el caso de obtener-lo
+
+				// Cramos una vista de resultados en el caso de obtener-lo
 				VentanaResultatMunicipi windowResultMuni = new VentanaResultatMunicipi();
-				
-				//Le pasamos la lista de resultados para procesarlo uno a uno en la tabla
+
+				// Le pasamos la lista de resultados para procesarlo uno a uno en la tabla
 				windowResultMuni.setResultat(listaResultats);
 				windowResultMuni.rellenarTabla();
 				windowResultMuni.setVisible(true);
@@ -194,19 +188,19 @@ public class VotacionsGUI {
 			}
 		});
 		cercaResultatsPerMunicipi.setFont(new Font("Dialog", Font.BOLD, 12));
-		
-		/* ZONA DE CONSULTA RESULTAT PER PARTIT DONAT*/
-		
+
+		/* ZONA DE CONSULTA RESULTAT PER PARTIT DONAT */
+
 		JPanel panelConsulta4 = new JPanel();
 		panelConsulta4.setLayout(null);
-		panelConsulta4.setBounds(302, 244, 229, 149);
+		panelConsulta4.setBounds(309, 334, 229, 149);
 		frame.getContentPane().add(panelConsulta4);
-		
+
 		inputPartit = new JTextField();
 		inputPartit.setColumns(10);
 		inputPartit.setBounds(27, 55, 164, 32);
 		panelConsulta4.add(inputPartit);
-		
+
 		JLabel lblbuscarResultatsper = new JLabel();
 		lblbuscarResultatsper.setToolTipText("");
 		lblbuscarResultatsper.setText("<html><p style=\"text-align:center\">Buscar resultats <br>per partit");
@@ -216,49 +210,48 @@ public class VotacionsGUI {
 		lblbuscarResultatsper.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblbuscarResultatsper.setBounds(27, 12, 164, 41);
 		panelConsulta4.add(lblbuscarResultatsper);
-		
+
 		JButton cercaResultatsPerPartit = new JButton("Cerca");
 		cercaResultatsPerPartit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				//Creamos una lista de municipis donde recibiremos el resultado de Model
+
+				// Creamos una lista de municipis donde recibiremos el resultado de Model
 				ArrayList<Resultat> listaResultats = new ArrayList<Resultat>();
 
-				//Obtenemos el valor que nos escribe el usuario y lo ponemos en MAYUSCULAS
-				String inputFormateado = controllerHelper.upperText(inputPartit.getText());
-				
-				//Creamos un objeto con el nombre de municipio que nos habían pasado
-				Municipi nomMunicipi = new Municipi(null, inputFormateado);
-				
-				
-				//Guardamos el resultado de la busqueda en la ArrayList
-				listaResultats = model.showResultByProvincia(nomMunicipi);
-				
-				//Cramos una vista de resultados en el caso de obtener-lo
-				VentanaResultatProvincia windowResultProvincia = new VentanaResultatProvincia();
-				
-				//Le pasamos la lista de resultados para procesarlo uno a uno en la tabla
-				windowResultProvincia.setResultat(listaResultats);
-				windowResultProvincia.rellenarTabla();
-				windowResultProvincia.setVisible(true);
+				// Obtenemos el valor que nos escribe el usuario y lo ponemos en MAYUSCULAS
+				String inputFormateado = inputPartit.getText().toUpperCase();
+
+				// Creamos un objeto con el nombre de municipio que nos habían pasado
+				Partit nomMunicipi = new Partit(inputFormateado, null);
+
+				// Guardamos el resultado de la busqueda en la ArrayList
+				listaResultats = model.showPartitByPartit(nomMunicipi);
+
+				// Cramos una vista de resultados en el caso de obtener-lo
+				VentanaResultatPartit windowResultPartit = new VentanaResultatPartit();
+
+				// Le pasamos la lista de resultados para procesarlo uno a uno en la tabla
+				windowResultPartit.setResultat(listaResultats);
+				windowResultPartit.rellenarTabla();
+				windowResultPartit.setVisible(true);
 
 			}
 		});
 		cercaResultatsPerPartit.setFont(new Font("Dialog", Font.BOLD, 12));
 		cercaResultatsPerPartit.setBounds(27, 99, 164, 25);
 		panelConsulta4.add(cercaResultatsPerPartit);
-		
-		/* ZONA DE CONSULTA RESULTAT PER PROVINCIA DONAT*/
+
+		/* ZONA DE CONSULTA RESULTAT PER PROVINCIA DONAT */
 		JPanel panelConsulta5 = new JPanel();
 		panelConsulta5.setLayout(null);
-		panelConsulta5.setBounds(580, 244, 229, 149);
+		panelConsulta5.setBounds(585, 334, 229, 149);
 		frame.getContentPane().add(panelConsulta5);
-		
+
 		inputProvincia = new JTextField();
 		inputProvincia.setColumns(10);
 		inputProvincia.setBounds(27, 55, 164, 32);
 		panelConsulta5.add(inputProvincia);
-		
+
 		JLabel lblbuscarResultatsper_1 = new JLabel();
 		lblbuscarResultatsper_1.setToolTipText("");
 		lblbuscarResultatsper_1.setText("<html><p style=\"text-align:center\">Buscar resultats <br>per provincía");
@@ -268,39 +261,41 @@ public class VotacionsGUI {
 		lblbuscarResultatsper_1.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblbuscarResultatsper_1.setBounds(27, 12, 164, 41);
 		panelConsulta5.add(lblbuscarResultatsper_1);
-		
+
 		JButton cercaResultatsPerProvincia = new JButton("Cerca");
 		cercaResultatsPerProvincia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				//Creamos una lista de municipis donde recibiremos el resultado de Model
+
+				// Creamos una lista de resultados donde recibiremos el resultado de Model
 				ArrayList<Resultat> listaResultats = new ArrayList<Resultat>();
 
-				//Obtenemos el valor que nos escribe el usuario y lo ponemos en MAYUSCULAS
+				// Obtenemos el valor que nos escribe el usuario y lo formateamos
 				String inputFormateado = controllerHelper.upperText(inputProvincia.getText());
-				
-				//Creamos un objeto con el nombre de municipio que nos habían pasado
+
+				// Creamos un objeto con el nombre de la provincia que nos han pasado
 				Municipi nomProvincia = new Municipi(null, inputFormateado);
-				
-				//Guardamos el resultado de la busqueda en la ArrayList
+
+				// Guardamos el resultado de la busqueda en la ArrayList
 				listaResultats = model.showResultByProvincia(nomProvincia);
-				
-				//Cramos una vista de resultados en el caso de obtener-lo
+
+				// Cramos una vista de resultados en el caso de obtener-lo
 				VentanaResultatProvincia windowResultProvincia = new VentanaResultatProvincia();
-				
-				//Le pasamos la lista de resultados para procesarlo uno a uno en la tabla
+
+				// Le pasamos la lista de resultados para agregarlos uno a uno en la tabla
 				windowResultProvincia.setResultat(listaResultats);
 				windowResultProvincia.rellenarTabla();
 				windowResultProvincia.setVisible(true);
 
-				
 			}
 		});
 		cercaResultatsPerProvincia.setFont(new Font("Dialog", Font.BOLD, 12));
 		cercaResultatsPerProvincia.setBounds(27, 99, 164, 25);
 		panelConsulta5.add(cercaResultatsPerProvincia);
-		
-		
+
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(new ImageIcon("/home/xyamuza/eclipse-workspace/Act2/src/img/banner.jpg"));
+		lblNewLabel.setBounds(-72, 0, 945, 190);
+		frame.getContentPane().add(lblNewLabel);
 
 		// Generar el menu superior
 		JMenuBar barra = new JMenuBar();
@@ -325,12 +320,14 @@ public class VotacionsGUI {
 
 		acerca.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "Aplicación para consultar resultados de votaciones mediante un CSV. Autor Xavi Yamuza", "Acerca de...",
-						JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null,
+						"Aplicación para consultar resultados de votaciones mediante un CSV. Autor Xavi Yamuza",
+						"Acerca de...", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 
 	}
+
 	public JFrame getFrame() {
 		return frame;
 	}
